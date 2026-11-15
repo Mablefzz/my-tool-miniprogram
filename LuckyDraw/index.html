@@ -140,18 +140,24 @@
         let rotationSpeed = 0;
         const friction = 0.98;
 
-        function spin() {
+       function spin() {
             if (isSpinning || options.length === 0) return;
             isSpinning = true; listInput.disabled = true; canvas.style.cursor = 'not-allowed';
             
+            // 【修復點】先強制解鎖並播放旋轉音效
             winAudio.pause();
             winAudio.currentTime = 0;
-            spinAudio.play().catch(e => console.log(e));
+            
+            spinAudio.currentTime = 0;
+            spinAudio.play().then(() => {
+                // 確保成功播放後開始轉動
+            }).catch(e => {
+                console.log("音效播放被瀏覽器攔截:", e);
+            });
 
             rotationSpeed = Math.random() * 0.2 + 0.4;
             animate();
         }
-
         function animate() {
             if (rotationSpeed > 0.002) {
                 rotationSpeed *= friction; startAngle += rotationSpeed; drawWheel();
