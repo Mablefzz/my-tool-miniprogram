@@ -55,7 +55,14 @@
 
         const spinAudio = new Audio('spin.mp3');
         const winAudio = new Audio('win.mp3');
-        spinAudio.loop = true;
+        
+        spinAudio.addEventListener('ended', function() {
+       if (isSpinning) {
+        spinAudio.currentTime = 0;
+        spinAudio.play().catch(e => console.log(e));
+    }
+});
+        //spinAudio.loop = true;
 
         const defaultOptions = ['彼得', '安得烈', '大雅各', '約翰', '腓力', '拿但業', '多馬', '馬太', '小雅各', '達太', '西門', '猶大'];
         const colorPalette = ['#ff7875', '#ff9c6e', '#ffc069', '#ffd666', '#bae637', '#73d13d', '#5cdbd3', '#69c0ff', '#9254de', '#f759ab'];
